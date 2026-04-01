@@ -7,6 +7,7 @@ import android.os.Vibrator
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,7 +23,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
@@ -416,4 +416,102 @@ fun AddReminderScreen(onClose: () -> Unit, onSave: (Reminder) -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
                     OutlinedTextField(
                         value = intervalMinutes,
-                        on
+                        onValueChange = { intervalMinutes = it },
+                        label = { Text("Repeat every X minutes") },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                }
+
+                // Haptic Feedback Section
+                item {
+                    Text("HAPTIC FEEDBACK", fontSize = 12.sp, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.tertiary, letterSpacing = 2.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    
+                    // Simple Grid replacement using Rows
+                    val types = NotificationType.values().toList()
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            types.take(3).forEach { type ->
+                                HapticButton(type, notificationType == type, Modifier.weight(1f)) {
+                                    notificationType = type
+                                    if (type != NotificationType.None) vibrator.vibrate(VibrationEffect.createOneShot(30, VibrationEffect.DEFAULT_AMPLITUDE))
+                                }
+                            }
+                        }
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            types.drop(3).forEach { type ->
+                                HapticButton(type, notificationType == type, Modifier.weight(1f)) {
+                                    notificationType = type
+                                    if (type != NotificationType.None) vibrator.vibrate(VibrationEffect.createOneShot(30, VibrationEffect.DEFAULT_AMPLITUDE))
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Repeat Cycle Section
+                item {
+                    Text("REPEAT CYCLE", fontSize = 12.sp, fontWeight = FontWeight.Black, color = MaterialTheme.colorScheme.primary, letterSpacing = 2.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Day.values().forEach { day ->
+                            val isSelected = repeatDays.contains(day)
+                            Box(
+                                modifier = Modifier
+                                    .size(44.dp)
+                                    .background(
+                                        if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
+                                        RoundedCornerShape(12.dp)
+                                    )
+                                    .border(
+                                        1.dp,
+                                        if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                                        RoundedCornerShape(12.dp)
+                                    )
+                                    .clickable {
+                                        repeatDays = if (isSelected) repeatDays.filter { it != day } else repeatDays + day
+                                    },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = day.shortName.substring(0, 2),
+                                    color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun HapticButton(type: NotificationType, isSelected: Boolean, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Box(
+        modifier = modifier
+            .height(56.dp)
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
+                RoundedCornerShape(16.dp)
+            )
+            .border(
+                1.dp,
+                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                RoundedCornerShape(16.dp)
+            )
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = type.name,
+            color = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Bold,
+            fontSize = 12.sp
+        )
+    }
+}
