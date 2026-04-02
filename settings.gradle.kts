@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "IntervalReminders"
+rootProject.name = "ExpressiveReminders"
 include(":app")

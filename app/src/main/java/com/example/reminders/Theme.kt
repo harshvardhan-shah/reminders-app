@@ -1,4 +1,4 @@
-package com.example.intervalreminders
+package com.example.reminders
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -18,22 +18,24 @@ val RobotoFlex = FontFamily(
     Font(googleFont = GoogleFont("Roboto Flex"), fontProvider = provider)
 )
 
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFFA8C7FA),
-    onPrimary = Color(0xFF062E6F),
-    primaryContainer = Color(0xFF284777),
-    onPrimaryContainer = Color(0xFFD6E3FF),
-    background = Color(0xFF111114),
-    surface = Color(0xFF111114),
-    surfaceVariant = Color(0xFF44474E),
-    onBackground = Color(0xFFE2E2E2),
-    onSurface = Color(0xFFE2E2E2)
+// Material 3 Expressive Dark Colors
+private val ExpressiveDark = darkColorScheme(
+    primary = Color(0xFF00E5FF), // Bright Cyan for + button and Active toggles
+    onPrimary = Color(0xFF000000),
+    primaryContainer = Color(0xFF004D40), // Active Card Background
+    onPrimaryContainer = Color(0xFF80DEEA),
+    background = Color(0xFF050505), // Pitch Black background
+    surface = Color(0xFF050505),
+    surfaceVariant = Color(0xFF161618), // Inactive Card background
+    onSurfaceVariant = Color(0xFF757575), // Inactive text
+    onBackground = Color(0xFFFFFFFF),
+    onSurface = Color(0xFFFFFFFF)
 )
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colorScheme = DarkColors,
+        colorScheme = ExpressiveDark,
         typography = MaterialTheme.typography.copy(
             displayLarge = MaterialTheme.typography.displayLarge.copy(fontFamily = RobotoFlex),
             titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = RobotoFlex),

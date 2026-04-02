@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches:[ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -20,13 +20,13 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: '8.4' # <-- THIS FIXES THE CRASH
+        gradle-version: '8.7'
         
     - name: Build APK
-      run: gradle :app:assembleDebug
+      run: ./gradlew :app:assembleDebug
       
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: IntervalReminders-APK
+        name: M3E-Pixel9-Reminders-APK
         path: app/build/outputs/apk/debug/app-debug.apk

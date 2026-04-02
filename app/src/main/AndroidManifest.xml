@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -10,13 +11,13 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Interval Reminders"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.IntervalReminders">
+        android:label="Reminders"
+        android:theme="@style/Theme.Reminders">
         
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,6 +32,7 @@
             android:exported="false"
             android:launchMode="singleTop" />
 
-        <!-- Receiver removed from here as it's no longer needed -->
+        <!-- Receiver correctly implementing onReceive -->
+        <receiver android:name=".ReminderReceiver" android:exported="false" />
     </application>
 </manifest>
