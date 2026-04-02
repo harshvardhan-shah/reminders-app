@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches:[ "main" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,8 @@ jobs:
         gradle-version: '8.7'
         
     - name: Build APK
-      run: ./gradlew :app:assembleDebug
+      # FIXED: Uses the global 'gradle' command instead of the missing './gradlew' file
+      run: gradle :app:assembleDebug
       
     - name: Upload APK
       uses: actions/upload-artifact@v4
