@@ -42,7 +42,8 @@ object ReminderManager {
             }
         }
 
-        val intent = Intent(context, ReminderReceiver::class.java).apply {
+        // Changed to target FiringActivity directly to bypass Android 10+ background restrictions
+        val intent = Intent(context, FiringActivity::class.java).apply {
             putExtra("VIBRATION_TYPE", vibrationType)
             putExtra("PLAY_MUSIC", playMusic)
             putExtra("START_H", startHour)
@@ -50,9 +51,10 @@ object ReminderManager {
             putExtra("END_H", endHour)
             putExtra("END_M", endMinute)
             putExtra("INTERVAL", intervalMinutes)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 
-        val pendingIntent = PendingIntent.getBroadcast(
+        val pendingIntent = PendingIntent.getActivity(
             context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 

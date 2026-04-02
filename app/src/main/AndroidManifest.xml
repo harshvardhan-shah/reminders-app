@@ -31,6 +31,6 @@
             android:exported="false"
             android:launchMode="singleTop" />
 
-        <receiver android:name=".ReminderReceiver" android:exported="false" />
+        <!-- Receiver removed from here as it's no longer needed -->
     </application>
 </manifest>
